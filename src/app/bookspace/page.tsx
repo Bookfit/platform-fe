@@ -261,12 +261,7 @@ export default function BookspaceRegisterPage() {
               )}
             />
 
-            <div
-              onClick={() => {
-                router.push("/bookspace/register/detail");
-              }}
-              className="flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3"
-            >
+            <div className="flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3">
               <span>세부 정보</span>
               <span className="text-gray-400">입력 ›</span>
             </div>
