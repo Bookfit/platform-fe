@@ -4,11 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { useState } from "react"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useState } from "react";
 
 /* 타입 선언 */
 const CATEGORIES = ["기타", "서점", "북카페", "스터디룸"] as const;
@@ -21,7 +27,7 @@ const formSchema = z.object({
   }),
   description: z.string().min(1, "소개를 입력해주세요"),
   images: z.array(z.instanceof(File)).optional(),
-})
+});
 
 export default function BookspaceRegisterPage() {
   const router = useRouter();
@@ -31,11 +37,11 @@ export default function BookspaceRegisterPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       placeName: "",
-      category: "기타", 
+      category: "기타",
       description: "",
       images: undefined,
     },
-  })
+  });
 
   /* 이미지 미리보기를 위한 state */
   const [imagePreview, setImagePreview] = useState<string[]>([]);
@@ -44,20 +50,23 @@ export default function BookspaceRegisterPage() {
   const handleSpaceListClick = () => {
     router.push("/bookspace/list");
     console.log("click");
-  }
+  };
 
   /* 카테고리 클릭 핸들러 */
   const handleCategoryClick = (category: CategoryType) => {
     form.setValue("category", category);
-  }
+  };
 
   /* 이미지 처리 함수 */
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: any
+  ) => {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
-      field.onChange(files); 
+      field.onChange(files);
 
-      const previews = files.map(file => URL.createObjectURL(file));
+      const previews = files.map((file) => URL.createObjectURL(file));
       setImagePreview(previews);
     }
   };
@@ -68,31 +77,38 @@ export default function BookspaceRegisterPage() {
       placeName: values.placeName,
       category: values.category,
       description: values.description,
-      images: values.images?.map(file => file.name) 
+      images: values.images?.map((file) => file.name),
     });
   }
 
   return (
-    <div className="max-w-[420px] mx-auto min-h-screen bg-white pb-20 relative shadow-lg">
+    <div>
       {/* Header */}
       <header className="px-5 pt-6">
         <span className="text-primary font-bold text-2xl">Bookfit</span>
         <h1 className="text-xl font-bold mt-4 mb-2 leading-snug">
-          북핏에 딱 맞는 공간,<br />함께 만들어요.
+          북핏에 딱 맞는 공간,
+          <br />
+          함께 만들어요.
         </h1>
         <p className="text-muted-foreground text-sm mb-4">
-          괜찮았던 공간이 있다면 한 번씩 등록해주세요!<br />
+          괜찮았던 공간이 있다면 한 번씩 등록해주세요!
+          <br />
           매번 고민되는 모임 장소를 같이 해결해요 :)
         </p>
         <Card className="p-3 mb-4 border-primary border-2 bg-primary/5">
-        <div className="flex gap-2 flex-col">
-          <div className="text-primary font-semibold text-base">등록 공간 조회</div>
-          <div className="text-muted-foreground text-xs">등록 및 요청 중인 공간을 조회 합니다</div>
-        </div>
+          <div className="flex gap-2 flex-col">
+            <div className="text-primary font-semibold text-base">
+              등록 공간 조회
+            </div>
+            <div className="text-muted-foreground text-xs">
+              등록 및 요청 중인 공간을 조회 합니다
+            </div>
+          </div>
         </Card>
         <div className="flex gap-3 mb-4">
-          <div 
-            className="flex-1 bg-primary/5 rounded-lg p-3 cursor-pointer hover:bg-primary/10 transition-colors text-center" 
+          <div
+            className="flex-1 bg-primary/5 rounded-lg p-3 cursor-pointer hover:bg-primary/10 transition-colors text-center"
             onClick={handleSpaceListClick}
           >
             <div className="text-primary text-xl font-bold">128</div>
@@ -109,7 +125,10 @@ export default function BookspaceRegisterPage() {
       <section className="bg-white px-5 py-6">
         <h2 className="text-lg font-semibold mb-4">공간 정보 등록</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+          >
             <div className="bg-gray-50 p-4 rounded-lg">
               <FormField
                 name="placeName"
@@ -119,7 +138,7 @@ export default function BookspaceRegisterPage() {
                       장소명 <span className="text-red-600">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         {...field}
                         className="bg-transparent border-none shadow-none text-base pt-1 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400"
                       />
@@ -146,8 +165,8 @@ export default function BookspaceRegisterPage() {
                             type="button"
                             onClick={() => handleCategoryClick(event)}
                             className={`flex-1 py-2 rounded-lg text-sm ${
-                              field.value === event 
-                                ? "bg-primary text-white" 
+                              field.value === event
+                                ? "bg-primary text-white"
                                 : "bg-white text-gray-500"
                             }`}
                           >
@@ -188,8 +207,8 @@ export default function BookspaceRegisterPage() {
                 <FormItem>
                   <div className="mt-2">
                     {/* 이미지 업로드 영역 */}
-                    <label 
-                      htmlFor="imageUpload" 
+                    <label
+                      htmlFor="imageUpload"
                       className="border border-dashed border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
                     >
                       <input
@@ -212,18 +231,22 @@ export default function BookspaceRegisterPage() {
                       <div className="mt-4 grid grid-cols-3 gap-2">
                         {imagePreview.map((url, index) => (
                           <div key={index} className="relative aspect-square">
-                            <img 
-                              src={url} 
-                              alt={`Preview ${index + 1}`} 
+                            <img
+                              src={url}
+                              alt={`Preview ${index + 1}`}
                               className="w-full h-full object-cover rounded-lg"
                             />
                             <button
                               type="button"
                               className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-sm"
                               onClick={() => {
-                                const newPreview = imagePreview.filter((_, i) => i !== index);
+                                const newPreview = imagePreview.filter(
+                                  (_, i) => i !== index
+                                );
                                 setImagePreview(newPreview);
-                                const newFiles = (value as File[])?.filter((_, i) => i !== index);
+                                const newFiles = (value as File[])?.filter(
+                                  (_, i) => i !== index
+                                );
                                 onChange(newFiles);
                               }}
                             >
@@ -254,8 +277,12 @@ export default function BookspaceRegisterPage() {
       <div className="fixed left-0 right-0 bottom-0 flex justify-center w-full">
         <nav className="w-full max-w-[420px] bg-white border-t border-gray-200 flex justify-around items-center h-14 z-50">
           <div className="text-primary text-xs font-bold text-center">홈</div>
-          <div className="text-muted-foreground text-xs text-center">중고도서</div>
-          <div className="text-muted-foreground text-xs text-center">커뮤니티</div>
+          <div className="text-muted-foreground text-xs text-center">
+            중고도서
+          </div>
+          <div className="text-muted-foreground text-xs text-center">
+            커뮤니티
+          </div>
           <div className="text-muted-foreground text-xs text-center">마이</div>
         </nav>
       </div>
