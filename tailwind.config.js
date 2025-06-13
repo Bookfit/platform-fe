@@ -13,7 +13,7 @@ module.exports = {
       }, 
       colors: {
         primary: {
-          DEFAULT: '#4F46E5',  // 메인 색상
+          default: '#4F46E5',  // 메인 색상
           light: '#F8F8FF',    // 연한 배경색
           dark: '#4338CA',     // 진한 색상
         }
