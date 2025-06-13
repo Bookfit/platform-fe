@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -43,7 +47,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-:root {
+/* :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
@@ -76,7 +80,7 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
-}
+} */
 
 .dark {
   --background: oklch(0.13 0.028 261.692);
@@ -118,5 +122,37 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Pretendard', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  }
+  :root {
+    --primary: #4F46E5;    /* 직접 HEX 값 사용 */
+    --primary-foreground: #FFFFFF;
+    
+    --background: #FFFFFF;
+    --foreground: #121212;
+    
+    --card: #FFFFFF;
+    --card-foreground: #121212;
+
+    --popover: #FFFFFF;
+    --popover-foreground: #121212;
+
+    --secondary: #F5F5F5;
+    --secondary-foreground: #121212;
+
+    --muted: #F5F5F5;
+    --muted-foreground: #737373;
+
+    --accent: #F5F5F5;
+    --accent-foreground: #121212;
+
+    --destructive: #FF3232;
+    --destructive-foreground: #FFFFFF;
+
+    --border: #E5E5E5;
+    --input: #E5E5E5;
+    --ring: #4F46E5;
+
+    --radius: 0.5rem;
   }
 }
