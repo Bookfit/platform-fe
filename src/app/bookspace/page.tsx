@@ -82,7 +82,7 @@ export default function BookspaceRegisterPage() {
   }
 
   return (
-    <div>
+    <div className="pb-16">
       {/* Header */}
       <header className="px-5 pt-6">
         <span className="text-primary font-bold text-2xl">Bookfit</span>
@@ -261,7 +261,12 @@ export default function BookspaceRegisterPage() {
               )}
             />
 
-            <div className="flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3">
+            <div
+              onClick={() => {
+                router.push("/bookspace/register/detail");
+              }}
+              className="flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3"
+            >
               <span>세부 정보</span>
               <span className="text-gray-400">입력 ›</span>
             </div>
