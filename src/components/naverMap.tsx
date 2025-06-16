@@ -1,11 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
     naver: {
       maps: {
-        Map: new (element: HTMLElement, options: any) => any;
-        LatLng: new (lat: number, lng: number) => any;
+        Map: new (
+          element: HTMLElement,
+          options: { center: { lat: number; lng: number }; zoom: number }
+        ) => {
+          center: { lat: number; lng: number };
+          zoom: number;
+        };
+        LatLng: new (lat: number, lng: number) => { lat: number; lng: number };
       };
     };
   }
@@ -15,7 +21,7 @@ const NaverMap = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=dfjysptqd9`;
     script.async = true;
     script.onload = () => {
@@ -29,7 +35,7 @@ const NaverMap = () => {
     document.head.appendChild(script);
   }, []);
 
-  return <div ref={mapRef} style={{ width: '100%', height: '100%' }} />;
+  return <div ref={mapRef} style={{ width: "100%", height: "100%" }} />;
 };
 
 export default NaverMap;
