@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ResponsiveLayout from "@/layout/common/ResponsiveLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,13 +25,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
       >
-        <h1 className="text-3xl font-bold underline text-red-500">
-          Hello World
-        </h1>
-        {children}
+        <ResponsiveLayout>{children}</ResponsiveLayout>
       </body>
     </html>
   );
