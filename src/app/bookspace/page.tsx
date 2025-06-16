@@ -60,7 +60,7 @@ export default function BookspaceRegisterPage() {
   /* 이미지 처리 함수 */
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: any
+    field: { onChange: (value: File[]) => void }
   ) => {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
