@@ -5,21 +5,21 @@ import DaumPostCode from "@/components/features/bookspace/detail/DaumPostCode/Da
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  FACILITY_INFORMATION_CATEGORIES,
-  LOCATION_CATEGORIES,
-} from "@/lib/utils/bookspace/register/detail";
-import { useBookSpaceStore } from "@/store/bookspace/bookspaceStore";
+import { useCategories } from "@/state/queries/bookspace/useCategories";
 
-import { useRouter } from "next/navigation";
 import React from "react";
+import { Controller, Form, useFormContext } from "react-hook-form";
 
 export default function RegisterDetailForm() {
-  const router = useRouter();
-  const { address, setAddress } = useBookSpaceStore();
+  const { control } = useFormContext();
+  const { data: categories } = useCategories();
 
   return (
-    <>
+    <Form
+      onSubmit={(formData) => {
+        console.log(formData);
+      }}
+    >
       <FormInput
         formName="location"
         label="장소명"
@@ -31,23 +31,24 @@ export default function RegisterDetailForm() {
         required
         label="카테고리"
         className="mb-2"
-        categories={LOCATION_CATEGORIES}
+        categories={categories?.categories ?? []}
       />
 
-      <DaumPostCode
-        label="주소"
-        onComplete={(address) => {
-          setAddress(address);
-        }}
-      >
-        {(onClick) => (
-          <div className="input-base" onClick={onClick}>
-            <span className="text-gray-500">
-              {address ? address : "주소 검색"}
-            </span>
-          </div>
+      <Controller
+        name="address"
+        control={control}
+        render={({ field }) => (
+          <DaumPostCode label="주소" onComplete={field.onChange}>
+            {(onClick) => (
+              <div className="input-base" onClick={onClick}>
+                <span className="text-gray-500">
+                  {field.value ? field.value : "주소 검색"}
+                </span>
+              </div>
+            )}
+          </DaumPostCode>
         )}
-      </DaumPostCode>
+      />
 
       <FormInput
         className="mb-6"
@@ -68,10 +69,11 @@ export default function RegisterDetailForm() {
       <CategorySelector
         label="시설 정보"
         className="mb-6"
-        categories={FACILITY_INFORMATION_CATEGORIES}
+        categories={categories?.facilities ?? []}
       />
 
       <Textarea
+        id="introduction"
         placeholder="소개글을 입력해주세요"
         required
         label="소개"
@@ -79,13 +81,11 @@ export default function RegisterDetailForm() {
       />
 
       <Button
+        type="submit"
         className="w-full mt-4 bg-primary py-4 rounded-lg h-12 cursor-pointer"
-        onClick={() => {
-          router.push("/bookspace");
-        }}
       >
-        <label className="text-lg ">확인</label>
+        <label className="text-lg ">등록</label>
       </Button>
-    </>
+    </Form>
   );
 }

@@ -1,8 +1,9 @@
 import { Label } from "@/components/ui/label";
+import { CategoryItem } from "@/services/bookspace/type";
 import React, { useState } from "react";
 
 interface CategorySelectorProps {
-  categories: string[];
+  categories: CategoryItem[];
   label?: string;
   required?: boolean;
   onChange?: (category: string) => void;
@@ -34,18 +35,18 @@ export default function CategorySelector({
         </Label>
       )}
       <div className="grid grid-cols-4 gap-2">
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <button
-            key={category}
+            key={category.code}
             type="button"
-            onClick={() => handleCategoryClick(category)}
+            onClick={() => handleCategoryClick(category.code)}
             className={`py-2 rounded-lg text-sm transition-colors border border-gray-300 ${
-              selectedCategory === category
+              selectedCategory === category.code
                 ? "bg-primary text-white"
                 : "bg-white text-gray-500 hover:bg-gray-100"
             }`}
           >
-            {category}
+            {category.name}
           </button>
         ))}
       </div>
