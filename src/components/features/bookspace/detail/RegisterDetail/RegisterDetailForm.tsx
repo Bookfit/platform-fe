@@ -2,6 +2,7 @@ import CategorySelector from "@/components/common/CategorySelector";
 import FormInput from "@/components/common/FormInput";
 import BusinessTime from "@/components/features/bookspace/detail/BusinessTime/BusinessTime";
 import DaumPostCode from "@/components/features/bookspace/detail/DaumPostCode/DaumPostCode";
+import NaverMap from "@/components/naverMap";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -61,6 +62,10 @@ export default function RegisterDetailForm() {
       <Label className="text-gray-400 text-[12px]">
         * 주소 입력 시 자동으로 지도에 표시됩니다
       </Label>
+
+      <div className="w-full h-[300px] mb-6">
+        <NaverMap />
+      </div>
 
       <Label>운영 시간</Label>
       <BusinessTime className="mb-2" title="평일" />
