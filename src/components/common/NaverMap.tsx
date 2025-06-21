@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 
 interface NaverMapProps {
   address?: string;
+  center?: NaverLatLng;
+  zoom?: number;
+  style?: React.CSSProperties;
 }
 
 // Naver Maps API 타입 정의
@@ -59,7 +62,12 @@ declare global {
   }
 }
 
-export const NaverMap = ({ address }: NaverMapProps) => {
+export const NaverMap = ({
+  address,
+  center = { lat: 37.5665, lng: 126.978 },
+  zoom = 13,
+  style = { width: "100%", height: "100%" },
+}: NaverMapProps) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<NaverMapInstance | null>(null);
   const markerRef = useRef<NaverMarker | null>(null);
@@ -73,14 +81,15 @@ export const NaverMap = ({ address }: NaverMapProps) => {
       if (!window.naver || !mapRef.current) return;
 
       mapInstanceRef.current = new window.naver.maps.Map(mapRef.current, {
-        center: new window.naver.maps.LatLng(37.5665, 126.978),
-        zoom: 13,
+        center: new window.naver.maps.LatLng(center.lat, center.lng),
+        zoom: zoom,
       });
       setIsLoaded(true);
     };
     document.head.appendChild(script);
-  }, []);
+  }, [center.lat, center.lng, zoom]);
 
+  //** naver map geocoder 기능 추가 **/
   useGeocode({
     address,
     isLoaded,
@@ -88,5 +97,5 @@ export const NaverMap = ({ address }: NaverMapProps) => {
     markerRef,
   });
 
-  return <div ref={mapRef} style={{ width: "100%", height: "100%" }} />;
+  return <div ref={mapRef} style={style} />;
 };
