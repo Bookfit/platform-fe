@@ -1,41 +1,41 @@
-'use client';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import NaverMap from '@/components/common/NaverMap';
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { NaverMap } from "@/components/common/NaverMap";
 
 // 샘플 데이터
 const SPACES = [
   {
     id: 1,
-    name: '강남 라임 스퀘어(북핏아지트)',
-    address: '서울 강남구 역삼로5길 5\n라임 스퀘어 지하 1층',
-    categories: ['기타'],
-    status: '등록',
+    name: "강남 라임 스퀘어(북핏아지트)",
+    address: "서울 강남구 역삼로5길 5\n라임 스퀘어 지하 1층",
+    categories: ["기타"],
+    status: "등록",
     highlight: true,
   },
   {
     id: 2,
-    name: '센트럴시티 000 카페 스터디룸',
-    address: '상세정보 미기재',
-    categories: ['스터디룸'],
-    status: '등록',
+    name: "센트럴시티 000 카페 스터디룸",
+    address: "상세정보 미기재",
+    categories: ["스터디룸"],
+    status: "등록",
     highlight: true,
   },
   {
     id: 3,
-    name: '책방 이음',
-    address: '서울 강남구 역삼로 123',
-    categories: ['서점', '북카페'],
-    status: '',
+    name: "책방 이음",
+    address: "서울 강남구 역삼로 123",
+    categories: ["서점", "북카페"],
+    status: "",
     highlight: false,
   },
   {
     id: 4,
-    name: '스터디 카페 코너',
-    address: '서울 강남구 선릉로 428',
-    categories: ['스터디룸'],
-    status: '',
+    name: "스터디 카페 코너",
+    address: "서울 강남구 선릉로 428",
+    categories: ["스터디룸"],
+    status: "",
     highlight: false,
   },
 ];
@@ -50,11 +50,11 @@ export default function BookSpaceListPage() {
         <h1 className="text-lg font-bold mb-3">
           <button
             type="button"
-            onClick={() => router.push('/bookspace')}
+            onClick={() => router.push("/bookspace")}
             className="text-gray-500 mr-1 hover:text-primary transition"
             aria-label="메인으로 이동"
           >
-            {'<'}
+            {"<"}
           </button>
           <span className="text-lg font-bold">등록 공간 조회</span>
         </h1>
@@ -107,7 +107,7 @@ export default function BookSpaceListPage() {
                     </p>
                   ))}
                 </div>
-                {space.status === '등록' && (
+                {space.status === "등록" && (
                   <Button
                     variant="outline"
                     className="rounded-full px-2 py-1 text-xs py-0 h-6"
