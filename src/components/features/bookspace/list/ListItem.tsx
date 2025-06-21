@@ -18,7 +18,7 @@ export default function ListItem({ space, onClick }: ListItemProps) {
         sampleId: space.id,
         userId: space?.userId || 0,
         loginType: space?.loginType || "kakao",
-        status: space?.status || "REGISTERED",
+        status: "REGISTERED",
       },
       {
         onSuccess: () => {
