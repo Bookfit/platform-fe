@@ -1,4 +1,4 @@
-import CategorySelector from "@/components/common/CategorySelector";
+import FormCategorySelector from "@/components/common/FormCategorySelector";
 import FormInput from "@/components/common/FormInput";
 import BusinessTime from "@/components/features/bookspace/detail/BusinessTime/BusinessTime";
 import DaumPostCode from "@/components/features/bookspace/detail/DaumPostCode/DaumPostCode";
@@ -6,13 +6,13 @@ import NaverMap from "@/components/naverMap";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useCategories } from "@/state/queries/bookspace/useCategories";
+import { useCategories } from "@/state/queries/bookspace/detail/useCategories";
 
 import React from "react";
 import { Controller, Form, useFormContext } from "react-hook-form";
 
 export default function RegisterDetailForm() {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
   const { data: categories } = useCategories();
 
   return (
@@ -22,15 +22,16 @@ export default function RegisterDetailForm() {
       }}
     >
       <FormInput
-        formName="location"
+        formName="name"
         label="장소명"
         placeholder="장소를 입력해주세요"
         required
       />
 
-      <CategorySelector
-        required
+      <FormCategorySelector
+        name="categories"
         label="카테고리"
+        required
         className="mb-2"
         categories={categories?.categories ?? []}
       />
@@ -64,14 +65,15 @@ export default function RegisterDetailForm() {
       </Label>
 
       <div className="w-full h-[300px] mb-6">
-        <NaverMap />
+        <NaverMap address={watch("address")} />
       </div>
 
       <Label>운영 시간</Label>
       <BusinessTime className="mb-2" title="평일" />
       <BusinessTime className="mb-6" title="주말" />
 
-      <CategorySelector
+      <FormCategorySelector
+        name="facilities"
         label="시설 정보"
         className="mb-6"
         categories={categories?.facilities ?? []}
