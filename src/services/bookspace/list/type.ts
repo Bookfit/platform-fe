@@ -1,4 +1,4 @@
-import { CategoryItem } from '@/services/bookspace/detail/type';
+import { CategoryItem } from "@/services/bookspace/detail/type";
 
 export interface BookSpaceListItem {
   id: number;
@@ -12,7 +12,7 @@ export interface BookSpaceListItem {
   weekdayHours: string | null;
   weekendHours: string | null;
   description: string;
-  status: 'PENDING' | 'REGISTERED';
+  status: "PENDING" | "REGISTERED";
   categories: CategoryItem[];
   facilities: CategoryItem[];
 }
@@ -28,7 +28,7 @@ export type BookSpaceListResponse = BookSpaceListItem[];
 export interface BookSpaceListRegisterParams {
   sampleId: number;
   userId: number;
-  longitude: string;
+  loginType: string;
   status: string;
 }
 
