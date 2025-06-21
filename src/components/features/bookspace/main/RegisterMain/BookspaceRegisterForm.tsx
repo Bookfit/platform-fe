@@ -7,10 +7,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useCategories } from '@/state/queries/bookspace/useCategories';
 import { useCreateBookspaceMain } from '@/state/mutations/bookspace/useCreateBookspaceMain';
+import { useUserInfo } from '@/state/queries/user/useUserInfo';
 import CategorySelector from '@/components/common/CategorySelector';
 import OverviewFormInput from './MainFormInput';
 import OverviewFormTextarea from './MainFormTextarea';
 import OverviewImageUpload from './MainImageUpload';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   placeName: z.string().min(1, '장소명을 입력해주세요'),
@@ -23,6 +25,7 @@ export default function BookspaceRegisterForm() {
   const router = useRouter();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
   const createBookspaceMutation = useCreateBookspaceMain();
+  const { data: user } = useUserInfo();
 
   /* 폼 선언 */
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,8 +41,8 @@ export default function BookspaceRegisterForm() {
   /* 폼 제출 함수 */
   function onSubmit(values: z.infer<typeof formSchema>) {
     const requestData = {
-      userId: 4,
-      loginType: 'kakao',
+      userId: user?.userId || 0,
+      loginType: user?.socialType || 'kakao',
       name: values.placeName,
       description: values.description,
       categories: [
@@ -54,12 +57,18 @@ export default function BookspaceRegisterForm() {
 
     createBookspaceMutation.mutate(requestData, {
       onSuccess: () => {
+        // 토스트 메시지
+        toast.success('북스페이스 등록이 성공적으로 완료되었습니다.');
+
         // 성공 시 처리
         router.push('/bookspace/list');
       },
       onError: (error) => {
         // 에러 처리
         console.error('북스페이스 등록 실패:', error);
+
+        // 토스트 메시지
+        toast.error('북스페이스 등록에 실패했습니다. 다시 시도해주세요.');
       },
     });
   }
@@ -67,7 +76,6 @@ export default function BookspaceRegisterForm() {
   return (
     <>
       <h2 className="text-lg font-semibold mb-4">공간 정보 등록</h2>
-
       {/* 폼 에러 메시지 */}
       {/* {Object.keys(form.formState.errors).length > 0 && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -87,7 +95,6 @@ export default function BookspaceRegisterForm() {
           </ul>
         </div>
       )} */}
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
