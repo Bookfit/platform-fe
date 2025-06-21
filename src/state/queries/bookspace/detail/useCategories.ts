@@ -1,5 +1,5 @@
-import { getCategories } from "@/services/bookspace";
-import { CategoryResponse } from "@/services/bookspace/type";
+import { getCategories } from "@/services/bookspace/detail";
+import { CategoryResponse } from "@/services/bookspace/detail/type";
 import { bookSpaceQueryOptions } from "@/state/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 

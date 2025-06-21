@@ -1,23 +1,23 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { Form, FormField, FormMessage } from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useCategories } from '@/state/queries/bookspace/useCategories';
-import { useCreateBookspaceMain } from '@/state/mutations/bookspace/useCreateBookspaceMain';
-import { useUserInfo } from '@/state/queries/user/useUserInfo';
-import CategorySelector from '@/components/common/CategorySelector';
-import OverviewFormInput from './MainFormInput';
-import OverviewFormTextarea from './MainFormTextarea';
-import OverviewImageUpload from './MainImageUpload';
-import { toast } from 'sonner';
+"use client";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useCategories } from "@/state/queries/bookspace/detail/useCategories";
+import { useCreateBookspaceMain } from "@/state/mutations/bookspace/useCreateBookspaceMain";
+import { useUserInfo } from "@/state/queries/user/useUserInfo";
+import CategorySelector from "@/components/common/CategorySelector";
+import OverviewFormInput from "./MainFormInput";
+import OverviewFormTextarea from "./MainFormTextarea";
+import OverviewImageUpload from "./MainImageUpload";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  placeName: z.string().min(1, '장소명을 입력해주세요'),
-  category: z.string().min(1, '카테고리를 선택해주세요'),
-  description: z.string().min(1, '소개를 입력해주세요'),
+  placeName: z.string().min(1, "장소명을 입력해주세요"),
+  category: z.string().min(1, "카테고리를 선택해주세요"),
+  description: z.string().min(1, "소개를 입력해주세요"),
   images: z.array(z.instanceof(File)).optional(),
 });
 
@@ -31,9 +31,9 @@ export default function BookspaceRegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      placeName: '',
-      category: '',
-      description: '',
+      placeName: "",
+      category: "",
+      description: "",
       images: undefined,
     },
   });
@@ -42,7 +42,7 @@ export default function BookspaceRegisterForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const requestData = {
       userId: user?.userId || 0,
-      loginType: user?.socialType || 'kakao',
+      loginType: user?.socialType || "kakao",
       name: values.placeName,
       description: values.description,
       categories: [
@@ -53,22 +53,22 @@ export default function BookspaceRegisterForm() {
       ],
     };
 
-    console.log('📤 API 요청 데이터:', requestData);
+    console.log("📤 API 요청 데이터:", requestData);
 
     createBookspaceMutation.mutate(requestData, {
       onSuccess: () => {
         // 토스트 메시지
-        toast.success('북스페이스 등록이 성공적으로 완료되었습니다.');
+        toast.success("북스페이스 등록이 성공적으로 완료되었습니다.");
 
         // 성공 시 처리
-        router.push('/bookspace/list');
+        router.push("/bookspace/list");
       },
       onError: (error) => {
         // 에러 처리
-        console.error('북스페이스 등록 실패:', error);
+        console.error("북스페이스 등록 실패:", error);
 
         // 토스트 메시지
-        toast.error('북스페이스 등록에 실패했습니다. 다시 시도해주세요.');
+        toast.error("북스페이스 등록에 실패했습니다. 다시 시도해주세요.");
       },
     });
   }
@@ -143,7 +143,7 @@ export default function BookspaceRegisterForm() {
           {/* 세부 정보 링크 */}
           <div
             onClick={() => {
-              router.push('/bookspace/register/detail');
+              router.push("/bookspace/register/detail");
             }}
             className="flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3"
           >
