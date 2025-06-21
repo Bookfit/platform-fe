@@ -121,8 +121,6 @@ export default function MapSection({
 
   // 선택된 공간이 변경되면 해당 위치로 지도 중심 이동
   useEffect(() => {
-    console.log("selectedSpaceId changed:", selectedSpaceId);
-
     if (
       !isLoaded ||
       !mapInstanceRef.current ||
@@ -135,15 +133,11 @@ export default function MapSection({
       (space) => space.id === selectedSpaceId,
     );
 
-    console.log("selectedSpace found:", selectedSpace);
-
     if (selectedSpace && selectedSpace.lat && selectedSpace.lon) {
       const position = new window.naver.maps.LatLng(
         selectedSpace.lat,
         selectedSpace.lon,
       );
-
-      console.log("Moving map to:", position);
 
       // 지도 중심 이동
       mapInstanceRef.current.setCenter(position);
@@ -174,7 +168,7 @@ export default function MapSection({
           <div className="w-35 h-96 overflow-y-auto border border-gray-200 rounded-lg">
             <div className="p-2 bg-gray-50 border-b border-gray-200">
               <h4 className="font-medium text-gray-900 text-sm">
-                주변 공간({validBookspaces.length}개)
+                주변 공간 ({validBookspaces.length}개)
               </h4>
             </div>
             <div className="divide-y divide-gray-200">
@@ -190,10 +184,10 @@ export default function MapSection({
                     onSpaceSelect?.(space);
                   }}
                 >
-                  <h5 className="font-medium text-gray-900 text-xs mb-1">
+                  <h5 className="font-medium text-gray-900 text-xs mb-1 break-keep">
                     {space.name}
                   </h5>
-                  <p className="text-xs text-gray-500 line-clamp-2">
+                  <p className="text-xs text-gray-500 line-clamp-2 break-keep">
                     {space.address}
                   </p>
                 </div>

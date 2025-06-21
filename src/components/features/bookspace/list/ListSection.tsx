@@ -29,14 +29,8 @@ export default function ListSection({
   onSpaceClick,
 }: ListSectionProps) {
   const handleSpaceClick = (space: BookSpaceListItem) => {
-    // TODO: 북스페이스 상세 페이지로 이동
-    console.log("북스페이스 클릭:", space);
     onSpaceClick?.(space);
   };
-
-  console.log("spaces", spaces);
-  console.log("currentPage", currentPage);
-  console.log("totalPages", totalPages);
 
   const getPageNumbers = () => {
     const pages = [];

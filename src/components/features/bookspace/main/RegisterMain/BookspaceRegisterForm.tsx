@@ -53,8 +53,6 @@ export default function BookspaceRegisterForm() {
       ],
     };
 
-    console.log("📤 API 요청 데이터:", requestData);
-
     createBookspaceMutation.mutate(requestData, {
       onSuccess: () => {
         // 토스트 메시지
