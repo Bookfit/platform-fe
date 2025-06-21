@@ -1,32 +1,32 @@
-import { Input } from '@/components/ui/input';
+import { Input } from "@/components/ui/input";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { UseFormReturn } from 'react-hook-form';
+} from "@/components/ui/form";
+import { UseFormReturn, Path, FieldValues } from "react-hook-form";
 
-interface MainFormInputProps {
-  form: UseFormReturn<{
-    [key: string]: string;
-  }>;
-  name: string;
+interface MainFormInputProps<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: Path<TFieldValues>;
   label: string;
   placeholder?: string;
   required?: boolean;
 }
 
-export default function MainFormInput({
+export default function MainFormInput<TFieldValues extends FieldValues>({
+  form,
   name,
   label,
   placeholder,
   required = false,
-}: MainFormInputProps) {
+}: MainFormInputProps<TFieldValues>) {
   return (
     <div className="bg-gray-50 p-4 rounded-lg">
       <FormField
+        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>

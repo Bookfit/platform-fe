@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { FormField, FormItem } from '@/components/ui/form';
-import { UseFormReturn } from 'react-hook-form';
+import { useState } from "react";
+import { FormField, FormItem } from "@/components/ui/form";
+import { UseFormReturn, Path, FieldValues } from "react-hook-form";
 
-interface MainImageUploadProps {
-  form: UseFormReturn<{
-    [key: string]: File[];
-  }>;
-  name: string;
+interface MainImageUploadProps<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: Path<TFieldValues>;
 }
 
-export default function MainImageUpload({ name }: MainImageUploadProps) {
+export default function MainImageUpload<TFieldValues extends FieldValues>({
+  form,
+  name,
+}: MainImageUploadProps<TFieldValues>) {
   const [imagePreview, setImagePreview] = useState<string[]>([]);
 
   const handleImageChange = (
@@ -27,6 +28,7 @@ export default function MainImageUpload({ name }: MainImageUploadProps) {
 
   return (
     <FormField
+      control={form.control}
       name={name}
       render={({ field: { onChange, value, ...field } }) => (
         <FormItem>

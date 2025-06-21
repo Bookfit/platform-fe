@@ -1,34 +1,34 @@
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from "@/components/ui/textarea";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { UseFormReturn } from 'react-hook-form';
+} from "@/components/ui/form";
+import { UseFormReturn, Path, FieldValues } from "react-hook-form";
 
-interface MainFormTextareaProps {
-  form: UseFormReturn<{
-    [key: string]: string;
-  }>;
-  name: string;
+interface MainFormTextareaProps<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: Path<TFieldValues>;
   label: string;
   placeholder?: string;
   required?: boolean;
   minHeight?: string;
 }
 
-export default function MainFormTextarea({
+export default function MainFormTextarea<TFieldValues extends FieldValues>({
+  form,
   name,
   label,
   placeholder,
   required = false,
-  minHeight = '80px',
-}: MainFormTextareaProps) {
+  minHeight = "80px",
+}: MainFormTextareaProps<TFieldValues>) {
   return (
     <div className="bg-gray-50 p-4 rounded-lg">
       <FormField
+        control={form.control}
         name={name}
         render={({ field }) => (
           <FormItem>
