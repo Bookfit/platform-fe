@@ -8,7 +8,7 @@ export const useCreateBookspaceMain = () => {
 
   return useMutation({
     mutationFn: (data: CreateBookspaceMainRequest) => createBookspaceMain(data),
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: bookSpaceQueryOptions.createMain(),
       });

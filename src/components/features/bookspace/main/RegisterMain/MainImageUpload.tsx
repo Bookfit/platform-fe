@@ -1,13 +1,16 @@
-import { useState } from 'react';
-import { FormControl, FormField, FormItem } from '@/components/ui/form';
-import { UseFormReturn } from 'react-hook-form';
+import { useState } from "react";
+import { FormField, FormItem } from "@/components/ui/form";
+import { UseFormReturn, Path, FieldValues } from "react-hook-form";
 
-interface MainImageUploadProps {
-  form: UseFormReturn<any>;
-  name: string;
+interface MainImageUploadProps<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: Path<TFieldValues>;
 }
 
-export default function MainImageUpload({ form, name }: MainImageUploadProps) {
+export default function MainImageUpload<TFieldValues extends FieldValues>({
+  form,
+  name,
+}: MainImageUploadProps<TFieldValues>) {
   const [imagePreview, setImagePreview] = useState<string[]>([]);
 
   const handleImageChange = (
@@ -25,6 +28,7 @@ export default function MainImageUpload({ form, name }: MainImageUploadProps) {
 
   return (
     <FormField
+      control={form.control}
       name={name}
       render={({ field: { onChange, value, ...field } }) => (
         <FormItem>
@@ -54,6 +58,7 @@ export default function MainImageUpload({ form, name }: MainImageUploadProps) {
               <div className="mt-4 grid grid-cols-3 gap-2">
                 {imagePreview.map((url, index) => (
                   <div key={index} className="relative aspect-square">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={url}
                       alt={`Preview ${index + 1}`}

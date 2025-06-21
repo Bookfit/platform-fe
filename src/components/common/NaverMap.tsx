@@ -19,10 +19,37 @@ export interface NaverMapInstance {
   zoom: number;
   setCenter: (latlng: NaverLatLng) => void;
   setZoom: (zoom: number) => void;
+  fitBounds: (bounds: NaverLatLngBounds) => void;
 }
 
 export interface NaverMarker {
   setMap: (map: NaverMapInstance | null) => void;
+  getPosition: () => NaverLatLng;
+}
+
+export interface NaverInfoWindow {
+  open: (map: NaverMapInstance, marker: NaverMarker) => void;
+  close: () => void;
+}
+
+export interface NaverLatLngBounds {
+  extend: (latlng: NaverLatLng) => void;
+}
+
+export interface NaverSize {
+  width: number;
+  height: number;
+}
+
+export interface NaverPoint {
+  x: number;
+  y: number;
+}
+
+export interface NaverIcon {
+  content: string;
+  size: NaverSize;
+  anchor: NaverPoint;
 }
 
 export interface GeocodeResponse {
@@ -31,6 +58,9 @@ export interface GeocodeResponse {
       x: string;
       y: string;
     }>;
+    meta: {
+      totalCount: number;
+    };
   };
 }
 
@@ -40,13 +70,25 @@ declare global {
       maps: {
         Map: new (
           element: HTMLElement,
-          options: { center: NaverLatLng; zoom: number }
+          options: { center: NaverLatLng; zoom: number },
         ) => NaverMapInstance;
         LatLng: new (lat: number, lng: number) => NaverLatLng;
         Marker: new (options: {
           position: NaverLatLng;
           map: NaverMapInstance;
+          icon?: NaverIcon;
         }) => NaverMarker;
+        Size: new (width: number, height: number) => NaverSize;
+        Point: new (x: number, y: number) => NaverPoint;
+        InfoWindow: new (options: { content: string }) => NaverInfoWindow;
+        LatLngBounds: new () => NaverLatLngBounds;
+        Event: {
+          addListener: (
+            target: NaverMapInstance | NaverMarker | NaverInfoWindow,
+            event: string,
+            listener: () => void,
+          ) => void;
+        };
         Service: {
           Status: {
             ERROR: string;
@@ -54,7 +96,7 @@ declare global {
           };
           geocode: (
             options: { query: string },
-            callback: (status: string, response: GeocodeResponse) => void
+            callback: (status: string, response: GeocodeResponse) => void,
           ) => void;
         };
       };
