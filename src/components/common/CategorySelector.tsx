@@ -1,5 +1,5 @@
 import { Label } from '@/components/ui/label';
-import { CategoryItem } from '@/services/bookspace/type';
+import { CategoryItem } from '@/services/bookspace/detail/type';
 import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 

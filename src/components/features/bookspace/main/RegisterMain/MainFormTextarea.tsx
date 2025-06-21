@@ -9,7 +9,9 @@ import {
 import { UseFormReturn } from 'react-hook-form';
 
 interface MainFormTextareaProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<{
+    [key: string]: string;
+  }>;
   name: string;
   label: string;
   placeholder?: string;
@@ -18,7 +20,6 @@ interface MainFormTextareaProps {
 }
 
 export default function MainFormTextarea({
-  form,
   name,
   label,
   placeholder,

@@ -9,7 +9,9 @@ import {
 import { UseFormReturn } from 'react-hook-form';
 
 interface MainFormInputProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<{
+    [key: string]: string;
+  }>;
   name: string;
   label: string;
   placeholder?: string;
@@ -17,7 +19,6 @@ interface MainFormInputProps {
 }
 
 export default function MainFormInput({
-  form,
   name,
   label,
   placeholder,

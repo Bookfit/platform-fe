@@ -1,12 +1,4 @@
-export interface CategoryItem {
-  code: string;
-  name: string;
-}
-
-export interface CategoryResponse {
-  categories: CategoryItem[];
-  facilities: CategoryItem[];
-}
+import { CategoryItem } from "@/services/bookspace/detail/type";
 
 export interface BookspaceMainResponse {
   totalCount: number;

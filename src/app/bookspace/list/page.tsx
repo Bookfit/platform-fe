@@ -1,125 +1,95 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { NaverMap } from "@/components/common/NaverMap";
-
-// 샘플 데이터
-const SPACES = [
-  {
-    id: 1,
-    name: "강남 라임 스퀘어(북핏아지트)",
-    address: "서울 강남구 역삼로5길 5\n라임 스퀘어 지하 1층",
-    categories: ["기타"],
-    status: "등록",
-    highlight: true,
-  },
-  {
-    id: 2,
-    name: "센트럴시티 000 카페 스터디룸",
-    address: "상세정보 미기재",
-    categories: ["스터디룸"],
-    status: "등록",
-    highlight: true,
-  },
-  {
-    id: 3,
-    name: "책방 이음",
-    address: "서울 강남구 역삼로 123",
-    categories: ["서점", "북카페"],
-    status: "",
-    highlight: false,
-  },
-  {
-    id: 4,
-    name: "스터디 카페 코너",
-    address: "서울 강남구 선릉로 428",
-    categories: ["스터디룸"],
-    status: "",
-    highlight: false,
-  },
-];
+'use client';
+import React, { useState } from 'react';
+import ListLayout from '@/layout/common/ListLayout';
+import ListFilter from '@/components/features/bookspace/list/ListFilter';
+import MapSection from '@/components/features/bookspace/list/MapSection';
+import ListSection from '@/components/features/bookspace/list/ListSection';
+import { BookSpaceListParams } from '@/services/bookspace/list/type';
+import { useBookspaceList } from '@/state/queries/bookspace/list/useBookspaceList';
+import { BookSpaceListItem } from '@/services/bookspace/list/type';
+import { useBookspaceFilterStore } from '@/store/bookspace/bookspaceFilterStore';
 
 export default function BookSpaceListPage() {
-  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedSpaceId, setSelectedSpaceId] = useState<number | null>(null);
+  const pageSize = 10;
+
+  // 필터 상태 가져오기
+  const { selectedFilter } = useBookspaceFilterStore();
+
+  const params: BookSpaceListParams = {
+    page: currentPage - 1,
+    size: pageSize,
+    sort: selectedFilter === 'all' ? 'name,asc' : `${selectedFilter},asc`,
+  };
+
+  console.log('params', params);
+  console.log('selectedFilter', selectedFilter);
+
+  const { data: bookspaceList, isLoading, isError } = useBookspaceList(params);
+
+  console.log('bookspaceList', bookspaceList);
+
+  const totalPages = 15; // 임시로 5페이지로 설정
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleSpaceSelect = (space: BookSpaceListItem) => {
+    console.log('선택된 공간:', space);
+    setSelectedSpaceId(space.id);
+    // 여기서 선택된 공간에 대한 추가 작업을 할 수 있습니다
+    // 예: 상세 페이지로 이동, 모달 표시 등
+  };
+
+  // 필터가 변경되면 페이지를 1로 리셋
+  React.useEffect(() => {
+    setCurrentPage(1);
+    setSelectedSpaceId(null);
+  }, [selectedFilter]);
+
+  if (isLoading) {
+    return (
+      <ListLayout title="등록 공간 조회" backUrl="/bookspace">
+        <div className="px-4 py-8 text-center">
+          <p className="text-gray-500 text-sm">로딩 중...</p>
+        </div>
+      </ListLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <ListLayout title="등록 공간 조회" backUrl="/bookspace">
+        <div className="px-4 py-8 text-center">
+          <p className="text-red-500 text-sm">
+            데이터를 불러오는 중 오류가 발생했습니다.
+          </p>
+        </div>
+      </ListLayout>
+    );
+  }
 
   return (
-    <div className="max-w-[420px] mx-auto min-h-screen bg-white pb-20 relative shadow-lg">
-      {/* 상단 필터/타이틀 */}
-      <header className="px-4 pt-6">
-        <h1 className="text-lg font-bold mb-3">
-          <button
-            type="button"
-            onClick={() => router.push("/bookspace")}
-            className="text-gray-500 mr-1 hover:text-primary transition"
-            aria-label="메인으로 이동"
-          >
-            {"<"}
-          </button>
-          <span className="text-lg font-bold">등록 공간 조회</span>
-        </h1>
-        <div className="flex gap-2 mb-4">
-          <Button variant="outline" className="rounded-full px-4 py-1 text-sm">
-            필터
-          </Button>
-          <Button variant="outline" className="rounded-full px-4 py-1 text-sm">
-            북카페
-          </Button>
-          <Button variant="outline" className="rounded-full px-4 py-1 text-sm">
-            스터디룸
-          </Button>
-          <Button variant="outline" className="rounded-full px-4 py-1 text-sm">
-            서점
-          </Button>
-        </div>
-      </header>
+    <ListLayout title="등록 공간 조회" backUrl="/bookspace">
+      {/* 필터 */}
+      <ListFilter />
 
-      {/* 지도/리스트 영역 */}
-      <section className="flex gap-2">
-        <div className="w-full h-[300px] bg-gray-200 flex items-center justify-center text-xs text-gray-400">
-          <NaverMap />
-        </div>
-      </section>
+      {/* 지도 섹션 */}
+      <MapSection
+        bookspaces={bookspaceList || []}
+        onSpaceSelect={handleSpaceSelect}
+        selectedSpaceId={selectedSpaceId}
+      />
 
-      {/* 공간 리스트 */}
-      <section>
-        {SPACES.map((space) => (
-          <div
-            key={space.id}
-            className="flex items-center justify-between px-4 py-4 border-b border-gray-200"
-          >
-            <div className="flex-1 flex items-center gap-2">
-              <div className="w-15 h-15 bg-gray-200 rounded-xl"></div>
-            </div>
-            <div className="flex-4">
-              <div>
-                <h2 className="text-sm font-bold">{space.name}</h2>
-                <p className="text-xs text-gray-500">{space.address}</p>
-              </div>
-              <div className="flex items-center gap-2 justify-between mt-2">
-                <div className="flex items-center gap-2">
-                  {space.categories.map((category) => (
-                    <p
-                      key={category}
-                      className="text-xs text-gray-500 bg-gray-200 rounded-full px-2 py-1"
-                    >
-                      {category}
-                    </p>
-                  ))}
-                </div>
-                {space.status === "등록" && (
-                  <Button
-                    variant="outline"
-                    className="rounded-full px-2 py-1 text-xs py-0 h-6"
-                  >
-                    등록
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </section>
-    </div>
+      {/* 리스트 섹션 */}
+      <ListSection
+        spaces={bookspaceList}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+    </ListLayout>
   );
 }

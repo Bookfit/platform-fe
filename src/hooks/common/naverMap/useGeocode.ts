@@ -2,7 +2,7 @@ import {
   GeocodeResponse,
   NaverMapInstance,
   NaverMarker,
-} from "@/components/naverMap";
+} from "@/components/common/NaverMap";
 import { useEffect, RefObject } from "react";
 
 interface UseGeocodeProps {
@@ -56,7 +56,7 @@ export const useGeocode = ({
           const item = items[0];
           const point = new window.naver.maps.LatLng(
             parseFloat(item.y),
-            parseFloat(item.x)
+            parseFloat(item.x),
           );
 
           console.log("point", point);
@@ -77,7 +77,7 @@ export const useGeocode = ({
             mapInstanceRef.current.setCenter(point);
             mapInstanceRef.current.setZoom(15);
           }
-        }
+        },
       );
     } catch (error) {
       console.error("Geocoder 오류:", error);
