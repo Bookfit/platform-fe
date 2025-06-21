@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import NaverMap from '@/components/naverMap';
+import NaverMap from '@/components/common/NaverMap';
 
 // 샘플 데이터
 const SPACES = [

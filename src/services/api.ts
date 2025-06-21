@@ -1,9 +1,9 @@
-import ky from "ky";
+import ky from 'ky';
 
 export const apiClient = ky.create({
-  prefixUrl: "/api",
+  prefixUrl: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   hooks: {
     beforeRequest: [
