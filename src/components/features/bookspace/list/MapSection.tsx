@@ -184,10 +184,10 @@ export default function MapSection({
                     onSpaceSelect?.(space);
                   }}
                 >
-                  <h5 className="font-medium text-gray-900 text-xs mb-1">
+                  <h5 className="font-medium text-gray-900 text-xs mb-1 break-keep">
                     {space.name}
                   </h5>
-                  <p className="text-xs text-gray-500 line-clamp-2">
+                  <p className="text-xs text-gray-500 line-clamp-2 break-keep">
                     {space.address}
                   </p>
                 </div>
