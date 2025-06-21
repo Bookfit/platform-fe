@@ -1,8 +1,9 @@
 import FormCategorySelector from "@/components/common/FormCategorySelector";
 import FormInput from "@/components/common/FormInput";
+import { NaverMap } from "@/components/common/NaverMap";
 import BusinessTime from "@/components/features/bookspace/detail/BusinessTime/BusinessTime";
 import DaumPostCode from "@/components/features/bookspace/detail/DaumPostCode/DaumPostCode";
-import NaverMap from "@/components/naverMap";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";

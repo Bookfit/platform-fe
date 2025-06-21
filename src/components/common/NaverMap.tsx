@@ -59,7 +59,7 @@ declare global {
   }
 }
 
-const NaverMap = ({ address }: NaverMapProps) => {
+export const NaverMap = ({ address }: NaverMapProps) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<NaverMapInstance | null>(null);
   const markerRef = useRef<NaverMarker | null>(null);
@@ -90,5 +90,3 @@ const NaverMap = ({ address }: NaverMapProps) => {
 
   return <div ref={mapRef} style={{ width: "100%", height: "100%" }} />;
 };
-
-export default NaverMap;
