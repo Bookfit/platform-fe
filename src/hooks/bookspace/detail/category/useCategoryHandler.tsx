@@ -8,6 +8,11 @@ interface UseCategoryHandlerProps {
   maxSelection?: number;
 }
 
+interface CategoryData {
+  code: string;
+  name: string;
+}
+
 export const useCategoryHandler = ({
   multiple = false,
   required = false,
@@ -17,44 +22,56 @@ export const useCategoryHandler = ({
   // 카테고리 선택 상태 확인 함수
   const isCategorySelected = (
     category: CategoryItem,
-    fieldValue: CategoryItem | CategoryItem[] | undefined
+    fieldValue: CategoryData | CategoryData[] | undefined
   ): boolean => {
     if (multiple) {
       return (
         Array.isArray(fieldValue) &&
-        fieldValue.some((item: CategoryItem) => item.code === category.code)
+        fieldValue.some((item: CategoryData) => item.code === category.code)
       );
     }
-    return (fieldValue as CategoryItem)?.code === category.code;
+    // 단일 선택일 때는 배열의 첫 번째 요소 확인
+    return (
+      Array.isArray(fieldValue) &&
+      fieldValue.length > 0 &&
+      fieldValue[0]?.code === category.code
+    );
   };
 
   // 카테고리 클릭 핸들러
   const handleCategoryClick = (
     category: CategoryItem,
-    fieldValue: CategoryItem | CategoryItem[] | undefined,
-    onChange: (value: CategoryItem | CategoryItem[]) => void
+    fieldValue: CategoryData | CategoryData[] | undefined,
+    onChange: (value: CategoryData | CategoryData[]) => void
   ) => {
+    const categoryData: CategoryData = {
+      code: category.code,
+      name: category.name,
+    };
+
     if (multiple) {
       const currentValue = Array.isArray(fieldValue) ? fieldValue : [];
-      const isSelected = isCategorySelected(category, fieldValue);
+      const isSelected = currentValue.some(
+        (item: CategoryData) => item.code === category.code
+      );
 
       const newValue = isSelected
         ? currentValue.filter(
-            (item: CategoryItem) => item.code !== category.code
+            (item: CategoryData) => item.code !== category.code
           )
-        : [...currentValue, category];
+        : [...currentValue, categoryData];
 
       onChange(newValue);
     } else {
-      onChange(category);
+      onChange([categoryData]);
     }
   };
 
   // 카테고리 버튼 렌더링
   const renderCategoryButton = (
     category: CategoryItem,
-    fieldValue: CategoryItem | CategoryItem[] | undefined,
-    onChange: (value: CategoryItem | CategoryItem[]) => void
+    fieldValue: CategoryData | CategoryData[] | undefined,
+    onChange: (value: CategoryData | CategoryData[]) => void
   ) => {
     const isSelected = isCategorySelected(category, fieldValue);
 
@@ -78,7 +95,7 @@ export const useCategoryHandler = ({
   const validationRules = useMemo(
     () => ({
       required: required ? `${label || "카테고리"}를 선택해주세요` : false,
-      validate: (value: CategoryItem | CategoryItem[] | undefined) => {
+      validate: (value: CategoryData | CategoryData[] | undefined) => {
         if (
           multiple &&
           maxSelection &&

@@ -6,7 +6,9 @@ import DaumPostCode from "@/components/features/bookspace/detail/DaumPostCode/Da
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { FormTextarea } from "@/components/ui/textarea";
+import { BookSpaceDetailRequest } from "@/services/bookspace/detail/type";
+import { useDetails } from "@/state/mutations/bookspace/detail/useDetails";
 import { useCategories } from "@/state/queries/bookspace/detail/useCategories";
 
 import React from "react";
@@ -15,11 +17,22 @@ import { Controller, Form, useFormContext } from "react-hook-form";
 export default function RegisterDetailForm() {
   const { control, watch } = useFormContext();
   const { data: categories } = useCategories();
+  const { mutate: createBookspace } = useDetails();
 
   return (
     <Form
-      onSubmit={(formData) => {
-        console.log(formData);
+      onSubmit={async (formData) => {
+        //**TODO: 유저 정보 수정 및 lat, lon 수정 필요 **/
+        const onSubmitData = {
+          ...formData?.data,
+          userId: 4,
+          loginType: "kakao",
+          lat: 37.488306,
+          lon: 126.981925,
+        };
+
+        await createBookspace(onSubmitData as BookSpaceDetailRequest);
+        console.log(onSubmitData);
       }}
     >
       <FormInput
@@ -64,14 +77,14 @@ export default function RegisterDetailForm() {
       <Label className="text-gray-400 text-[12px]">
         * 주소 입력 시 자동으로 지도에 표시됩니다
       </Label>
-
       <div className="w-full h-[300px] mb-6">
         <NaverMap address={watch("address")} />
       </div>
 
       <Label>운영 시간</Label>
-      <BusinessTime className="mb-2" title="평일" />
-      <BusinessTime className="mb-6" title="주말" />
+
+      <BusinessTime name="weekdayHours" title="평일" className="mb-2" />
+      <BusinessTime name="weekendHours" title="주말" className="mb-6" />
 
       <FormCategorySelector
         name="facilities"
@@ -80,8 +93,8 @@ export default function RegisterDetailForm() {
         categories={categories?.facilities ?? []}
       />
 
-      <Textarea
-        id="introduction"
+      <FormTextarea
+        name="description"
         placeholder="소개글을 입력해주세요"
         required
         label="소개"
