@@ -17,7 +17,7 @@ export default function ListItem({ space, onClick }: ListItemProps) {
       {
         sampleId: space.id,
         userId: space?.userId || 0,
-        longitude: space?.loginType || "kakao",
+        loginType: space?.loginType || "kakao",
         status: space?.status || "REGISTERED",
       },
       {
@@ -63,7 +63,7 @@ export default function ListItem({ space, onClick }: ListItemProps) {
               </p>
             ))}
           </div>
-          {space.status === "REGISTERED" && (
+          {space.status === "PENDING" && (
             <Button
               variant="outline"
               className="rounded px-1 py-1 text-xs py-0 h-4"

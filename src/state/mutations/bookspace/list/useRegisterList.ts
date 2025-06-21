@@ -1,9 +1,9 @@
 import {
   BookSpaceListRegisterParams,
   BookSpaceListRegisterResponse,
-} from '@/services/bookspace/list/type';
-import { useMutation } from '@tanstack/react-query';
-import { apiClient } from '@/services/api';
+} from "@/services/bookspace/list/type";
+import { useMutation } from "@tanstack/react-query";
+import { apiClient } from "@/services/api";
 
 export const useRegisterList = () => {
   return useMutation({
@@ -11,7 +11,7 @@ export const useRegisterList = () => {
       data: BookSpaceListRegisterParams,
     ): Promise<BookSpaceListRegisterResponse> => {
       const response = await apiClient
-        .patch('api/map/serch', {
+        .patch("api/map/search", {
           json: data,
         })
         .json<BookSpaceListRegisterResponse>();
