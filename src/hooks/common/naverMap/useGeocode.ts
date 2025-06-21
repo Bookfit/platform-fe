@@ -22,11 +22,8 @@ export const useGeocode = ({
     if (!address || !isLoaded || !window.naver || !mapInstanceRef.current)
       return;
 
-    console.log("주소 처리 시작:", address);
-
     // Geocoder가 로드되었는지 확인
     if (typeof window.naver.maps.Service.geocode !== "function") {
-      console.log("Geocoder가 아직 로드되지 않았습니다.");
       return;
     }
 
@@ -37,19 +34,16 @@ export const useGeocode = ({
         },
         (status: string, response: GeocodeResponse) => {
           if (status !== window.naver.maps.Service.Status.OK) {
-            console.log("주소를 찾을 수 없습니다:", address);
             return;
           }
 
           if (!response || !response.v2 || !response.v2.addresses) {
-            console.log("응답 구조가 올바르지 않습니다:", response);
             return;
           }
 
           const items = response.v2.addresses;
 
           if (items.length === 0) {
-            console.log("검색 결과가 없습니다:", address);
             return;
           }
 
@@ -58,8 +52,6 @@ export const useGeocode = ({
             parseFloat(item.y),
             parseFloat(item.x),
           );
-
-          console.log("point", point);
 
           // 기존 마커 제거
           if (markerRef.current) {

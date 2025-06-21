@@ -1,13 +1,13 @@
-'use client';
-import React, { useState } from 'react';
-import ListLayout from '@/layout/common/ListLayout';
-import ListFilter from '@/components/features/bookspace/list/ListFilter';
-import MapSection from '@/components/features/bookspace/list/MapSection';
-import ListSection from '@/components/features/bookspace/list/ListSection';
-import { BookSpaceListParams } from '@/services/bookspace/list/type';
-import { useBookspaceList } from '@/state/queries/bookspace/list/useBookspaceList';
-import { BookSpaceListItem } from '@/services/bookspace/list/type';
-import { useBookspaceFilterStore } from '@/store/bookspace/bookspaceFilterStore';
+"use client";
+import React, { useState } from "react";
+import ListLayout from "@/layout/common/ListLayout";
+import ListFilter from "@/components/features/bookspace/list/ListFilter";
+import MapSection from "@/components/features/bookspace/list/MapSection";
+import ListSection from "@/components/features/bookspace/list/ListSection";
+import { BookSpaceListParams } from "@/services/bookspace/list/type";
+import { useBookspaceList } from "@/state/queries/bookspace/list/useBookspaceList";
+import { BookSpaceListItem } from "@/services/bookspace/list/type";
+import { useBookspaceFilterStore } from "@/store/bookspace/bookspaceFilterStore";
 
 export default function BookSpaceListPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,15 +20,10 @@ export default function BookSpaceListPage() {
   const params: BookSpaceListParams = {
     page: currentPage - 1,
     size: pageSize,
-    sort: selectedFilter === 'all' ? 'name,asc' : `${selectedFilter},asc`,
+    sort: selectedFilter === "all" ? "name,asc" : `${selectedFilter},asc`,
   };
 
-  console.log('params', params);
-  console.log('selectedFilter', selectedFilter);
-
   const { data: bookspaceList, isLoading, isError } = useBookspaceList(params);
-
-  console.log('bookspaceList', bookspaceList);
 
   const totalPages = 15; // 임시로 5페이지로 설정
 
@@ -37,10 +32,7 @@ export default function BookSpaceListPage() {
   };
 
   const handleSpaceSelect = (space: BookSpaceListItem) => {
-    console.log('선택된 공간:', space);
     setSelectedSpaceId(space.id);
-    // 여기서 선택된 공간에 대한 추가 작업을 할 수 있습니다
-    // 예: 상세 페이지로 이동, 모달 표시 등
   };
 
   // 필터가 변경되면 페이지를 1로 리셋
