@@ -10,6 +10,7 @@ import { FormTextarea } from "@/components/ui/textarea";
 import { BookSpaceDetailRequest } from "@/services/bookspace/detail/type";
 import { useDetails } from "@/state/mutations/bookspace/detail/useDetails";
 import { useCategories } from "@/state/queries/bookspace/detail/useCategories";
+import { useNaverMapStore } from "@/store/bookspace/detail/naverMarkerStore";
 
 import React from "react";
 import { Controller, Form, useFormContext } from "react-hook-form";
@@ -17,22 +18,23 @@ import { Controller, Form, useFormContext } from "react-hook-form";
 export default function RegisterDetailForm() {
   const { control, watch } = useFormContext();
   const { data: categories } = useCategories();
-  const { mutate: createBookspace } = useDetails();
+  const { mutate: createBookSpace } = useDetails();
+  const { lat, lng } = useNaverMapStore();
 
   return (
     <Form
       onSubmit={async (formData) => {
-        //**TODO: 유저 정보 수정 및 lat, lon 수정 필요 **/
+        /**TODO: 유저 정보 수정 필요 **/
+
         const onSubmitData = {
           ...formData?.data,
           userId: 4,
           loginType: "kakao",
-          lat: 37.488306,
-          lon: 126.981925,
+          lat,
+          lon: lng,
         };
 
-        await createBookspace(onSubmitData as BookSpaceDetailRequest);
-        console.log(onSubmitData);
+        await createBookSpace(onSubmitData as BookSpaceDetailRequest);
       }}
     >
       <FormInput
