@@ -3,6 +3,7 @@ import {
   NaverMapInstance,
   NaverMarker,
 } from "@/components/common/NaverMap";
+import { useNaverMapStore } from "@/store/bookspace/detail/naverMarkerStore";
 import { useEffect, RefObject } from "react";
 
 interface UseGeocodeProps {
@@ -18,6 +19,7 @@ export const useGeocode = ({
   mapInstanceRef,
   markerRef,
 }: UseGeocodeProps) => {
+  const { setMarker } = useNaverMapStore();
   useEffect(() => {
     if (!address || !isLoaded || !window.naver || !mapInstanceRef.current)
       return;
@@ -50,8 +52,10 @@ export const useGeocode = ({
           const item = items[0];
           const point = new window.naver.maps.LatLng(
             parseFloat(item.y),
-            parseFloat(item.x),
+            parseFloat(item.x)
           );
+
+          setMarker(parseFloat(item.y), parseFloat(item.x));
 
           // 기존 마커 제거
           if (markerRef.current) {
@@ -69,10 +73,10 @@ export const useGeocode = ({
             mapInstanceRef.current.setCenter(point);
             mapInstanceRef.current.setZoom(15);
           }
-        },
+        }
       );
     } catch (error) {
       console.error("Geocoder 오류:", error);
     }
-  }, [address, isLoaded, mapInstanceRef, markerRef]);
+  }, [address, isLoaded, mapInstanceRef, markerRef, setMarker]);
 };
